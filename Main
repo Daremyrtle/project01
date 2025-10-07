@@ -1,0 +1,125 @@
+#include<iostream>
+#include<cmath>
+#include"Polygon.h"
+using namespace std;
+
+Polygon::Polygon() {
+	numPoints = 0;
+	shapeName = "Polygon";
+}
+void Polygon::setPoints(double x[], double y[], int numP) {
+	numPoints  = numP;
+	
+	for (int i=0; i < numPoints; i++) {
+		x[i] = vertex[i].getXvalue();
+		y[i] = vertex[i].getYvalue();
+		vertex[i].setValues(x[i], y[i]);
+	}
+}
+void Polygon::displayPoints() {
+	for (int i = 0; i < numPoints; i++) {
+		vertex[i].display();
+	}
+}
+double Polygon::getPerimeter() {
+	double P = 0;
+	for (int i = 0; i < numPoints; i++) {
+		P += vertex[i].dist(vertex[(i + 1)]);
+	}
+	return P;
+}
+Triangle::Triangle(double x1, double y1, double x2,
+				  double y2,double x3, double y3) {
+	numPoints = 3;
+	shapeName = "Triangle";
+	Point p1 = vertex[0], p2 = vertex[1], p3 = vertex[2];
+	p1.setValues(x1, y1);
+	p2.setValues(x2, y2);
+	p3.setValues(x3, y3);
+	
+}
+double Triangle::getArea(int R) {
+	double a = 0,b = 0, c = 0,heq=0, hR=0;
+	for (int i = 0; i < numPoints; i++) {
+		a = vertex[i].dist(vertex[i + 1]);
+		b = (vertex[i].dist(vertex[i + 1]));
+		heq = (sqrt(3) / 2) * a;
+		hR = (a * b) / c;
+	}
+	if (R == 0) {
+		return 0.5 * a * heq;
+	}
+	else {
+		return 0.5 * a * hR;
+	}
+}
+EQ_Triangle::EQ_Triangle(double x1, double y1, double x2,
+	double y2, double x3, double y3) :Triangle(x1, y1, x2, y2, x3, y3){
+	shapeName = "Equilateral Triangle";
+}
+R_Triangle::R_Triangle(double x1, double y1, double x2,
+	double y2, double x3, double y3) :Triangle(x1, y1, x2, y2, x3, y3) {
+	shapeName = "Right Triangle";
+}
+Parallelogram::Parallelogram(double x1, double y1, double x2,
+	double y2, double x3, double y3,
+	double x4, double y4) {
+	numPoints = 4;
+	shapeName = "Parallelogram";
+	Point p1 = vertex[0], p2 = vertex[1], p3 = vertex[2], p4 = vertex[3];
+	p1.setValues(x1, y1);
+	p2.setValues(x2, y2);
+	p3.setValues(x3, y3);
+	p4.setValues(x4, y4);
+}
+double Parallelogram::getArea(int R) {
+	int a , b ,p , r ;
+	a = vertex[0].dist(vertex[1]);
+	b = vertex[0].dist(vertex[4]);
+	p = vertex[0].dist(vertex[2]);
+	if (R == 0) {
+		r = acos(((a * a) + (b * b) - (p * p)) / (2 * a * b));
+		return a * b * sin(r);
+	}
+	else {
+		return a * b;
+	}
+}
+Rectangle::Rectangle(double x1, double y1, double x2,
+	double y2, double x3, double y3,
+	double x4, double y4) : Parallelogram(x1, y1, x2, y2, x3, y3, x4, y4) {
+	shapeName = "Rectangle";
+	
+}
+
+
+
+int main() {
+	EQ_Triangle tri1(0,0 , 0.5,0.5 , 1,0),
+				tri2(0,0 , 0.5,0.8660254 , 1, 0);
+	tri2.displayPoints();
+	cout << "P = " << tri2.getPerimeter() << endl;
+	cout << "A = " << tri2.getArea(0) << endl << endl;
+
+	R_Triangle right1(0,0 , 1,1 , 3,0),
+			   right2(0,0 , 0,1 , 3,0.5),
+			   right3(0,0, 0,1 , 3, 0);
+	right3.displayPoints();
+	cout << "P = " << right3.getPerimeter() << endl;
+	cout << "A = " << right3.getArea(1) << endl << endl;
+	Parallelogram par1(1,0 , 2.1,1 , 4,1 , 3,0),
+				  par2(1,0 , 2,1 , 3.8,1 , 3,0),
+				  par3(1,0 , 2,1 , 4,1 , 3,0);
+	par3.displayPoints();
+	cout << "P = " << par3.getPerimeter() << endl;
+	cout << "A = " << par3.getArea(0) << endl << endl;
+
+	Rectangle rect1(1,0 , 2,1 , 4,1 , 3,0),
+			  rect2(1,0 , 2.1,1 , 4,1 , 3,0),
+			  rect3(0,0 , 0,3 , 4,3 , 4,0);
+	rect3.displayPoints();
+	cout << "P = " << rect3.getPerimeter() << endl;
+	cout << "A = " << rect3.getArea(1) << endl << endl; 
+	return 0;
+}
+
