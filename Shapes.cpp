@@ -12,7 +12,7 @@ Polygon::Polygon() {
 void Polygon::setPoints(double x[], double y[], int numP) {
     numPoints = numP;
     for (int i = 0; i < numPoints; i++) {
-        vertex[i].setValues(x[i], y[i]);
+        vertex.push_back(Point(x[i], y[i]));
     }
 }
 
